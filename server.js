@@ -5,7 +5,7 @@ const exphbs = require('express-handlebars');
 const mongoose = require('mongoose');
 
 // routes
-const routes = require('./routes');
+const router = express.Router();
 
 // set port
 const port = process.env.PORT || 3000;
@@ -25,13 +25,18 @@ app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
 
 // route requests through middleware
-app.use(routes);
+app.use(router);
 
 // database
-const mongoUri = process.env.MONGO_URI || 'mongodb://localhost/news-scraper-db';
+const db = process.env.MONGO_URI || 'mongodb://localhost/news-scraper-db';
 
 // connect to mongo
-mongoose.connect(mongoUri);
+mongoose
+  .connect(
+    db,
+    { useNewUrlParser: true })
+  .then(() => console.log('Mongo Connected...'))
+  .catch(err => console.log(err));
 
 // listener
 app.listen(port, () => {
