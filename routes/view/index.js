@@ -2,7 +2,7 @@ const router = require('express').Router();
 const db = require('../../models');
 
 // render homepage
-router.get('/', (req, res) {
+router.get('/', (req, res) => {
   db.Headline.find({ saved: false })
   .sort({ date: -1 })
   .then((dbArticles) => {
